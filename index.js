@@ -1,4 +1,3 @@
-const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
@@ -7,17 +6,20 @@ const Filter = require("bad-words");
 const {
   generateMessage,
   generateLocationMessage,
-} = require("./utils/messages");
-const { getUser, removeUser, getRoomUsers, addUser } = require("./utils/users");
+} = require("./src/utils/messages");
+const {
+  getUser,
+  removeUser,
+  getRoomUsers,
+  addUser,
+  users
+} = require("./src/utils/users");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
 const port = process.env.PORT || 8080;
-//const publicDirectoryPath = path.join(__dirname, "../public");
-
-//app.use(express.static(publicDirectoryPath));
 
 io.on("connection", (socket) => {
   socket.on("join", ({ username, room }, cb) => {
@@ -73,7 +75,11 @@ io.on("connection", (socket) => {
       );
     }
   });
-});
+});  
+
+app.get('/active',async(req,res)=>{
+  res.send({users})
+})
 
 server.listen(port, () => {
   console.log(`Server is up on port ${port}!`);

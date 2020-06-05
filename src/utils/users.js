@@ -57,4 +57,5 @@ module.exports = {
   getRoomUsers,
   getUser,
   removeUser,
+  users,
 };
